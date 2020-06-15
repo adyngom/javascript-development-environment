@@ -18,5 +18,8 @@
 		"no-console": "warn",
 		"no-debugger": "warn",
 		"no-unused-vars": "error"
+	},
+	"settings": {
+		"import/resolver": "webpack"
 	}
 }

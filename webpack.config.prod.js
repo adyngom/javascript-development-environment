@@ -1,27 +1,17 @@
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const package = require('./package.json');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const deps= require('./package.json');
 
 module.exports = {
-	entry: {
-		main: './src/main.js',
-		vendor: Object.keys(package.dependencies),
-		movie: './src/movie-page.js',
-	},
-	mode: 'development',
-	devServer: {
-		proxy: {
-			'/.netlify': {
-				target: 'http://localhost:9000',
-				pathRewrite: { '^/.netlify/functions': '' },
-			},
-		},
-	},
+	devtool: 'source-map',
+	entry: [path.resolve(__dirname, 'src/index')],
 	output: {
-		filename: '[name].bundle.js',
+		filename: 'bundle.js',
+		publicPath: '/',
 		path: path.resolve(__dirname, 'build'),
 	},
+	mode: 'development',
 	optimization: {
 		minimizer: [
 			new UglifyJsPlugin({
@@ -53,26 +43,5 @@ module.exports = {
 			},
 		],
 	},
-	plugins: [
-		// new HtmlWebpackplugin({
-		//   inject: true,
-		//   template: path.resolve("./index.html")
-		// })
-		new HtmlWebpackPlugin({
-			hash: true,
-			title: 'Flowflix Movies Search',
-			myPageHeader: 'Hello World',
-			template: './index.html',
-			chunks: ['vendor', 'main'],
-			filename: './dist/index.html', //relative to root of the application
-		}),
-		new HtmlWebpackPlugin({
-			hash: true,
-			title: 'Flow Flix - Movie page',
-			myPageHeader: 'Settings',
-			template: './movie-page.html',
-			chunks: ['vendor', 'movie'],
-			filename: './dist/movie-page.html',
-		}),
-	],
+	plugins: [],
 };
